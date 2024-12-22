@@ -4,6 +4,10 @@ const SubmitLinkSchema = new mongoose.Schema({
     videoURL: {
         type: String, 
         required: true,
+    },
+    transcript: {
+        type: String,
+        required: true,
     }
 })
 
