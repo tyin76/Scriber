@@ -1,5 +1,5 @@
 
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
@@ -21,7 +21,10 @@ function HomePage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ input }),
+                body: JSON.stringify({
+                  input,
+                  ...(user ? { user } : {})
+                })
 
             })
             const data = await response.json();
@@ -57,18 +60,20 @@ function HomePage() {
     
     </Box>
 
-  <Box>{displayedTranscript}</Box>
 
-  <div>{!user ? (<LoginButton setUser={setUser}></LoginButton>): (
-    <div>
+    <Box>{!user ? (<>
+    <LoginButton setUser={setUser}></LoginButton>
+    <Typography>Log in for more features like transcription history!</Typography>
+    </>): (
+    <Box>
     <h1>Welcome {user.name}</h1>
     <p>{user.email}</p>
     <LogoutButton setUser={setUser}></LogoutButton>
-    </div>
+    </Box>
   )}
-  </div>
+  </Box>
 
-
+  <Box>{displayedTranscript}</Box>
 
 
 </>

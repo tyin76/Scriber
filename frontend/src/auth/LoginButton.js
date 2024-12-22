@@ -11,8 +11,8 @@ const LoginButton = ({ setUser }) => {
         name: user.displayName,
         email: user.email
       });
-      console.log(user.name);
-      console.log(user.email);
+      console.log(typeof user.name);
+      console.log(typeof user.email);
     } catch (error) {
       console.error('Login failed:', error.message);
     }
