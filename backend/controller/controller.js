@@ -12,7 +12,7 @@ const he = require('he');
 
 // adds link to db and transcribes
 router.post('/submit-link', async (req,res) => {
-    const { input, user = undefined } = req.body;
+    const { input, userEmail = null } = req.body;
     const stringInput = input.toString();  
 
      const youtubeUrlRegex = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
@@ -26,7 +26,7 @@ router.post('/submit-link', async (req,res) => {
     const transcriptToString = transcript.map(obj => he.decode(he.decode(obj.text))).join(' ');
     console.log(transcriptToString);
     const newLink = new Link ({
-        user: user.email,
+        user: userEmail,
         videoURL: input,
         transcript: transcriptToString,
     });

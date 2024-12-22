@@ -10,10 +10,15 @@ function HomePage() {
     const [input, setInput] = useState('');
     const [displayedTranscript, setDisplayedTranscript] = useState('');
     const [user, setUser] = useState(null);
+    let userEmail="";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Pressed");
+
+        if (user) {
+           userEmail = user.email;
+        }
 
         try {
             const response = await fetch('http://localhost:5001/submit-link', {
@@ -23,7 +28,7 @@ function HomePage() {
                 },
                 body: JSON.stringify({
                   input,
-                  ...(user ? { user } : {})
+                  ...(user ? { userEmail } : {})
                 })
 
             })
