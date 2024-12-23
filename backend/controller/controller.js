@@ -8,6 +8,8 @@ const { YoutubeTranscript } = require('youtube-transcript');
 
 const he = require('he');
 
+const mongoose = require('mongoose');
+
 // API Endpoints
 
 // adds link to db and transcribes
@@ -22,9 +24,9 @@ router.post('/submit-link', async (req,res) => {
 
     try {
     const transcript = await YoutubeTranscript.fetchTranscript(stringInput);
-    console.log("transcript", transcript);
+    //console.log("transcript", transcript);
     const transcriptToString = transcript.map(obj => he.decode(he.decode(obj.text))).join(' ');
-    console.log(transcriptToString);
+    //console.log(transcriptToString);
     const newLink = new Link ({
         user: userEmail,
         videoURL: input,
@@ -37,6 +39,26 @@ router.post('/submit-link', async (req,res) => {
     console.log(error);
     res.json({ message: 'failed at /submit-link'})
 }
+})
+
+router.get('/getTranscriptionHistory/:userEmail', async (req,res) => {
+    const { userEmail } = req.params;
+
+    if (!userEmail) {
+        return res.status(400).json( { message : "User Email is Required"});
+    }
+    const makeEmailString = userEmail.toString();
+    try {
+        const history = await Link.find({ user: makeEmailString });
+        console.log(history);
+        console.log(typeof history);
+
+        res.status(200).json({ message: "User Transcriptions found!", history: history});
+    } catch (error) {
+        console.log(error);
+    }
+
+
 })
 
 

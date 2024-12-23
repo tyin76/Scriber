@@ -5,11 +5,14 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import LoginButton from '../auth/LoginButton';
 import LogoutButton from '../auth/LogoutButton';
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
     const [input, setInput] = useState('');
     const [displayedTranscript, setDisplayedTranscript] = useState('');
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
     let userEmail="";
 
     const handleSubmit = async (e) => {
@@ -48,6 +51,28 @@ function HomePage() {
     }
 
 
+    async function handleTranscriptionHistory(e) {
+      try {
+        const response = await fetch (`http://localhost:5001/getTranscriptionHistory/${encodeURIComponent(user.email)}`, {
+          method:'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        if (!response.ok) {
+          throw new Error(`Error ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log(data.history);
+
+        navigate('/transcriptionHistory', { state: { history: data.history } });
+      } catch (error) {
+        console.log(error);
+      }
+      
+    }
+
+
   return (
     <>
     <Box
@@ -80,6 +105,14 @@ function HomePage() {
 
   <Box>{displayedTranscript}</Box>
 
+  
+  {user && <Button
+        variant="contained"
+        onClick={handleTranscriptionHistory}
+      >
+        See Transcription History
+      </Button>
+      }
 
 </>
     
