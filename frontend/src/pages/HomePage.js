@@ -139,13 +139,28 @@ function HomePage() {
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                                 Welcome, {user.name}!
                             </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                {user.email}
-                            </Typography>
+                            <br></br>
                             <LogoutButton setUser={setUser} />
                         </Box>
                     )}
                 </Box>
+
+                {user && (
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        size="large"
+                        sx={{
+                            mt: 4,
+                            width: '100%',
+                            borderRadius: 3,
+                            textTransform: 'none',
+                        }}
+                        onClick={handleTranscriptionHistory}
+                    >
+                        See Transcription History
+                    </Button>
+                )}
 
                 {displayedTranscript && (
                     <Box
@@ -165,23 +180,6 @@ function HomePage() {
                             {displayedTranscript}
                         </Typography>
                     </Box>
-                )}
-
-                {user && (
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        size="large"
-                        sx={{
-                            mt: 4,
-                            width: '100%',
-                            borderRadius: 3,
-                            textTransform: 'none',
-                        }}
-                        onClick={handleTranscriptionHistory}
-                    >
-                        See Transcription History
-                    </Button>
                 )}
             </Paper>
         </Container>
