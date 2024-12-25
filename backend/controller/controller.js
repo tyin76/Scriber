@@ -58,9 +58,18 @@ router.get('/getTranscriptionHistory/:userEmail', async (req,res) => {
         console.log(error);
     }
 
-
 })
 
+router.delete('/DeleteTranscriptionHistory/:id', async (req,res) => {
+    const { id } = req.params;
+    try {
+        await Link.findByIdAndDelete(id);
+        res.status(200).json({ message: "FROM BACKEND SUCCESSFULLY DELETED"});
+    } catch (error) {
+        console.log(error);
+    }
+})
+;
 
 
 module.exports = router;

@@ -1,18 +1,17 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Button, Stack, Typography, Paper, Container } from '@mui/material';
+import { Box, Button, Stack, Typography, Paper, Container, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
 
 function TranscriptionHistory() {
   const location = useLocation();
-  const history = location.state?.history;
-
-  console.log(history);
-  console.log(typeof history);
+  const [history, setHistory] = useState(location.state?.history || []);
 
   if (!history || history.length === 0) {
     return (
@@ -36,7 +35,28 @@ function TranscriptionHistory() {
       </Container>
     );
   }
-  
+
+  async function handleDelete(id) {
+    try {
+      const response = await fetch(`http://localhost:5001/DeleteTranscriptionHistory/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`Error ${response.statusText}`);
+      }
+      if (response.ok) {
+        setHistory((prevHistory) => prevHistory.filter((entry) => entry._id !== id))
+        console.log("DELETION SUCCESSFUL")
+      }
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
@@ -64,10 +84,23 @@ function TranscriptionHistory() {
               p: 3,
               borderRadius: 3,
               backgroundColor: '#f9f9f9',
+              position: 'relative', 
             }}
           >
+            <IconButton
+              onClick={() => handleDelete(item._id)}
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                color: '#d32f2f', 
+              }}
+              aria-label="delete transcription"
+            >
+              <DeleteIcon />
+            </IconButton>
             <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-              {index + 1}. <br></br>
+              {index + 1}. <br />
               Video URL:
             </Typography>
             <Typography
@@ -84,27 +117,25 @@ function TranscriptionHistory() {
               Transcript:
             </Typography>
             <Accordion>
-            <AccordionSummary
-            expandIcon={<ArrowDropDownIcon />}>
-            <Typography component="span">Click to See Full Transcript</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-            <Typography
-              variant="body1"
-              sx={{
-                wordBreak: 'break-word',
-                color: '#424242',
-              }}
-            >
-              {JSON.stringify(item.transcript)}
-            </Typography>
-            </AccordionDetails>
+              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <Typography component="span">Click to See Full Transcript</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    wordBreak: 'break-word',
+                    color: '#424242',
+                  }}
+                >
+                  {JSON.stringify(item.transcript)}
+                </Typography>
+              </AccordionDetails>
             </Accordion>
           </Paper>
         ))}
       </Stack>
     </Container>
-    
   );
 }
 
