@@ -1,6 +1,7 @@
 import React from 'react';
 import { auth, provider, signInWithPopup } from '../auth/firebaseConfig';
 import { Button } from '@mui/material';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 
 const LoginButton = ({ setUser }) => {
   const handleLogin = async () => {
@@ -25,7 +26,7 @@ const LoginButton = ({ setUser }) => {
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleLogin}>Login with Google</Button>
+      <GoogleSignInButton onClick={handleLogin}>Sign in with Google</GoogleSignInButton>
     </div>
   );
 };
