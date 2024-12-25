@@ -2,11 +2,12 @@
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginButton from '../auth/LoginButton';
 import LogoutButton from '../auth/LogoutButton';
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../auth/firebaseConfig';
 
 function HomePage() {
     const [input, setInput] = useState('');
@@ -14,6 +15,24 @@ function HomePage() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     let userEmail="";
+
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+        if (currentUser) {
+          const token = await currentUser.getIdToken();
+          localStorage.setItem('firebaseToken', token);
+          setUser({
+            name: currentUser.displayName,
+            email: currentUser.email,
+          });
+        } else {
+          localStorage.removeItem('firebaseToken');
+          setUser(null);
+        }
+      }
+    )
+    return () => unsubscribe();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

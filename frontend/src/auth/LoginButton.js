@@ -7,6 +7,11 @@ const LoginButton = ({ setUser }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
+      // get Firebase ID token
+      const token = await user.getIdToken();
+      localStorage.setItem('firebaseToken', token);
+
       setUser({
         name: user.displayName,
         email: user.email
