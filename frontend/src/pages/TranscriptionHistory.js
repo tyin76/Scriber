@@ -84,23 +84,35 @@ function TranscriptionHistory() {
               p: 3,
               borderRadius: 3,
               backgroundColor: '#f9f9f9',
-              position: 'relative', 
             }}
           >
-            <IconButton
-              onClick={() => handleDelete(item._id)}
-              sx={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-                color: '#d32f2f', 
-              }}
-              aria-label="delete transcription"
-            >
-              <DeleteIcon />
-            </IconButton>
+            
+            <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 2,
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                  {index + 1}.
+                </Typography>
+                <IconButton
+                  onClick={() => handleDelete(item._id)}
+                  sx={{
+                    color: '#d32f2f', 
+                    padding: '1px', 
+                  }}
+                  aria-label="delete transcription"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+
+
+            
             <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-              {index + 1}. <br />
               Video URL:
             </Typography>
             <Typography
