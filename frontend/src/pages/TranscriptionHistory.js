@@ -15,6 +15,8 @@ import Tooltip from '@mui/material/Tooltip';
 function TranscriptionHistory() {
   const location = useLocation();
   const [history, setHistory] = useState(location.state?.history || []);
+  const [quizzes, setQuizzes] = useState("");
+  const [answerVisible, setAnswersVisible] = useState({});
 
   if (!history || history.length === 0) {
     return (
@@ -101,6 +103,62 @@ function TranscriptionHistory() {
     doc.save('transcription.pdf');
 };
 
+async function handleGenerateQuiz(transcript, id) {
+  try {
+    const response = await fetch("http://localhost:5001/generate-quiz", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ transcript: transcript})
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate quiz questions')
+    }
+
+    const data = await response.json();
+    console.log(data.quiz);
+    console.log(typeof data.quiz);
+    console.log(parseQuiz(data.quiz));
+    const parsedQuiz = parseQuiz(data.quiz);
+
+    setQuizzes((prevQuizzes) => ({
+      ...prevQuizzes,
+      [id]: parsedQuiz,
+    }))
+    console.log(quizzes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+function parseQuiz(data) {
+  const questions = data.split("Question: ").slice(1); // Split by 'Question:' and ignore the first empty element
+  return questions.map(questionBlock => {
+    const [questionText, optionsAnswerText] = questionBlock.split("Options:");
+    const [optionsText, answerText] = optionsAnswerText.split("Answer:");
+    
+    const question = questionText.trim();
+    const options = optionsText
+      .split(",") // Split by commas
+      .map(option => option.trim());
+    const answer = answerText.trim();
+    
+    return { question, options, answer };
+  });
+}
+
+function handleShowAnswer(question) {
+  setAnswersVisible((prev) => ({
+    ...prev,
+    [question]: !prev[question],
+  }))
+  
+}
+
+
 
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
@@ -124,6 +182,7 @@ function TranscriptionHistory() {
     </Link>
   </Box>
 
+
   <Stack spacing={3}>
     {history.map((item, index) => (
       <Paper
@@ -145,12 +204,14 @@ function TranscriptionHistory() {
             mb: 3,
           }}
         >
+          
           <Typography
             variant="h6"
             sx={{ fontWeight: 'bold', color: '#1976d2' }}
           >
             {index + 1}.
           </Typography>
+          
           <Box>
             <Button
               variant="outlined"
@@ -179,6 +240,7 @@ function TranscriptionHistory() {
           </Box>
         </Box>
 
+        <Button variant='contained'onClick={() => handleGenerateQuiz(item.transcript, item._id)}>Generate Quiz</Button>
         {/* Video URL Section */}
         <Box sx={{ mb: 3 }}>
           <Typography
@@ -230,8 +292,42 @@ function TranscriptionHistory() {
             >
               {item.transcript}
             </Typography>
+            
           </AccordionDetails>
         </Accordion>
+        {quizzes[item._id] && (
+      <Box sx={{ mt: 4, p: 3, backgroundColor: '#e3f2fd', borderRadius: 3 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2 }}>
+          Generated Quiz:
+        </Typography>
+        {quizzes[item._id].map((q, idx) => (
+          <Box key={idx} sx={{ mb: 2 }}>
+            <Typography variant="body1">
+              {idx + 1}. {q.question}
+            </Typography>
+            {q.options.map((option, optIdx) => (
+              <Typography key={optIdx} variant="body2" sx={{ ml: 2 }}>
+                {option}
+              </Typography>
+              ))}
+              <br></br>
+              <Button
+                      variant="outlined"
+                      color='secondary'
+                      sx={{ mt: 1 }}
+                      onClick={() => handleShowAnswer(`${item._id}-${idx}`)}
+                    >
+                      {answerVisible[`${item._id}-${idx}`] ? 'Hide Answer' : 'Show Answer'}
+                    </Button>
+                    {answerVisible[`${item._id}-${idx}`] && (
+                      <Typography variant="body2" sx={{ ml: 2, mt: 1, fontWeight: 'bold' }}>
+                        Answer: {q.answer}
+                      </Typography>
+                    )}
+          </Box>
+        ))}
+      </Box>
+    )}
       </Paper>
     ))}
   </Stack>
