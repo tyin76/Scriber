@@ -162,176 +162,200 @@ function handleShowAnswer(question) {
 
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
-  <Box sx={{ mb: 4, textAlign: 'center' }}>
-      <Link to="/" style={{ textDecoration: 'none' }}>
-      <Tooltip title="Go to Home Page" arrow>
-      <IconButton
-        color="primary"
-        sx={{
-          borderRadius: '50%', 
-          backgroundColor: '#f7f9fc',
-          boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-          '&:hover': {
-            backgroundColor: '#e3f2fd',
-          },
-        }}
-      >
-        <HomeIcon sx={{ fontSize: 30 }}>Go to Home Page</HomeIcon>
-      </IconButton>
-      </Tooltip>
-    </Link>
-  </Box>
-
-
-  <Stack spacing={3}>
-    {history.map((item, index) => (
-      <Paper
-        key={index}
-        elevation={4}
-        sx={{
-          p: 4,
-          borderRadius: 5,
-          backgroundColor: '#f7f9fc',
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        
-        <Box
+    <Box sx={{ mb: 4, textAlign: 'center' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+        <Tooltip title="Go to Home Page" arrow>
+        <IconButton
+          color="primary"
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 3,
+            borderRadius: '50%', 
+            backgroundColor: '#f7f9fc',
+            boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+            '&:hover': {
+              backgroundColor: '#e3f2fd',
+            },
+          }}
+        >
+          <HomeIcon sx={{ fontSize: 30 }}>Go to Home Page</HomeIcon>
+        </IconButton>
+        </Tooltip>
+      </Link>
+    </Box>
+  
+  
+    <Stack spacing={3}>
+      {history.map((item, index) => (
+        <Paper
+          key={index}
+          elevation={4}
+          sx={{
+            p: 4,
+            borderRadius: 5,
+            backgroundColor: '#f7f9fc',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
           }}
         >
           
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 'bold', color: '#1976d2' }}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 3,
+            }}
           >
-            {index + 1}.
-          </Typography>
-          
-          <Box>
+            
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 'bold', color: '#1976d2' }}
+            >
+              {index + 1}.
+            </Typography>
+            
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                onClick={() => handleDownloadPDF(item.transcript, item.videoURL)}
+                sx={{
+                  textTransform: 'none',
+                  borderRadius: 3,
+                  fontWeight: 'bold',
+                }}
+              >
+                Download PDF
+              </Button>
+              <IconButton
+                onClick={() => handleDelete(item._id)}
+                sx={{
+                  color: '#d32f2f',
+                  padding: '8px',
+                }}
+                aria-label="delete transcription"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          </Box>
+  
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+            }}
+          >
             <Button
-              variant="outlined"
-              color="secondary"
-              size="small"
-              onClick={() => handleDownloadPDF(item.transcript, item.videoURL)}
+              variant="contained"
+              onClick={() => handleGenerateQuiz(item.transcript, item._id)}
               sx={{
                 textTransform: 'none',
                 borderRadius: 3,
                 fontWeight: 'bold',
-                mr: 2,
               }}
             >
-              Download PDF
+              Generate Quiz
             </Button>
-            <IconButton
-              onClick={() => handleDelete(item._id)}
-              sx={{
-                color: '#d32f2f',
-                padding: '8px',
-              }}
-              aria-label="delete transcription"
-            >
-              <DeleteIcon />
-            </IconButton>
           </Box>
-        </Box>
-
-        <Button variant='contained'onClick={() => handleGenerateQuiz(item.transcript, item._id)}>Generate Quiz</Button>
-        {/* Video URL Section */}
-        <Box sx={{ mb: 3 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: 'bold', mb: 1, color: '#0d47a1' }}
-          >
-            Video URL:
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              wordBreak: 'break-word',
-              backgroundColor: '#ffffff',
-              p: 2,
-              borderRadius: 3,
-              boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
-              color: '#424242',
-            }}
-          >
-            {item.videoURL}
-          </Typography>
-        </Box>
-
-        {/* Transcript Section */}
-        <Typography
-          variant="subtitle1"
-          sx={{ fontWeight: 'bold', mb: 1, color: '#0d47a1' }}
-        >
-          Transcript:
-        </Typography>
-        <Accordion
-          sx={{
-            backgroundColor: '#ffffff',
-            borderRadius: 3,
-            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            <Typography component="span">Click to See Full Transcript</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
+  
+          {/* Video URL Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 'bold', mb: 1, color: '#0d47a1' }}
+            >
+              Video URL:
+            </Typography>
             <Typography
               variant="body1"
               sx={{
                 wordBreak: 'break-word',
-                lineHeight: 1.6,
+                backgroundColor: '#ffffff',
+                p: 2,
+                borderRadius: 3,
+                boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
                 color: '#424242',
               }}
             >
-              {item.transcript}
+              {item.videoURL}
             </Typography>
-            
-          </AccordionDetails>
-        </Accordion>
-        {quizzes[item._id] && (
-      <Box sx={{ mt: 4, p: 3, backgroundColor: '#e3f2fd', borderRadius: 3 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2 }}>
-          Generated Quiz:
-        </Typography>
-        {quizzes[item._id].map((q, idx) => (
-          <Box key={idx} sx={{ mb: 2 }}>
-            <Typography variant="body1">
-              {idx + 1}. {q.question}
-            </Typography>
-            {q.options.map((option, optIdx) => (
-              <Typography key={optIdx} variant="body2" sx={{ ml: 2 }}>
-                {option}
-              </Typography>
-              ))}
-              <br></br>
-              <Button
-                      variant="outlined"
-                      color='secondary'
-                      sx={{ mt: 1 }}
-                      onClick={() => handleShowAnswer(`${item._id}-${idx}`)}
-                    >
-                      {answerVisible[`${item._id}-${idx}`] ? 'Hide Answer' : 'Show Answer'}
-                    </Button>
-                    {answerVisible[`${item._id}-${idx}`] && (
-                      <Typography variant="body2" sx={{ ml: 2, mt: 1, fontWeight: 'bold' }}>
-                        Answer: {q.answer}
-                      </Typography>
-                    )}
           </Box>
-        ))}
-      </Box>
-    )}
-      </Paper>
-    ))}
-  </Stack>
-</Container>
+  
+          {/* Transcript Section */}
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 'bold', mb: 1, color: '#0d47a1' }}
+          >
+            Transcript:
+          </Typography>
+          <Accordion
+            sx={{
+              backgroundColor: '#ffffff',
+              borderRadius: 3,
+              boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+              <Typography component="span">Click to See Full Transcript</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography
+                variant="body1"
+                sx={{
+                  wordBreak: 'break-word',
+                  lineHeight: 1.6,
+                  color: '#424242',
+                }}
+              >
+                {item.transcript}
+              </Typography>
+              
+            </AccordionDetails>
+          </Accordion>
+          {quizzes[item._id] && (
+        <Box sx={{ mt: 4, p: 3, backgroundColor: '#e3f2fd', borderRadius: 3 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2 }}>
+            Generated Quiz:
+          </Typography>
+          {quizzes[item._id].map((q, idx) => (
+            <Box key={idx} sx={{ mb: 2 }}>
+              <Typography variant="body1">
+                {idx + 1}. {q.question}
+              </Typography>
+              {q.options.map((option, optIdx) => (
+                <Typography key={optIdx} variant="body2" sx={{ ml: 2 }}>
+                  {option}
+                </Typography>
+                ))}
+                <br></br>
+                <Button
+                        variant="outlined"
+                        color='secondary'
+                        sx={{ mt: 1 }}
+                        onClick={() => handleShowAnswer(`${item._id}-${idx}`)}
+                      >
+                        {answerVisible[`${item._id}-${idx}`] ? 'Hide Answer' : 'Show Answer'}
+                      </Button>
+                      {answerVisible[`${item._id}-${idx}`] && (
+                        <Typography variant="body2" sx={{ ml: 2, mt: 1, fontWeight: 'bold' }}>
+                          Answer: {q.answer}
+                        </Typography>
+                      )}
+            </Box>
+          ))}
+        </Box>
+      )}
+        </Paper>
+      ))}
+    </Stack>
+  </Container>
   );
 }
 
