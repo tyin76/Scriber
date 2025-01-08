@@ -40,6 +40,7 @@ function HomePage() {
         try {
             const response = await fetch('https://scriber-production.up.railway.app/api/submit-link', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -65,6 +66,7 @@ function HomePage() {
       try {
         const response = await fetch(`https://scriber-production.up.railway.app/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           }

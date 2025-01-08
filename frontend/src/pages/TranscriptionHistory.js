@@ -51,6 +51,7 @@ function TranscriptionHistory() {
     try {
       const response = await fetch(`https://scriber-production.up.railway.app/api/DeleteTranscriptionHistory/${id}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         }
@@ -107,6 +108,7 @@ async function handleGenerateQuiz(transcript, id) {
   try {
     const response = await fetch("https://scriber-production.up.railway.app/api/generate-quiz", {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
