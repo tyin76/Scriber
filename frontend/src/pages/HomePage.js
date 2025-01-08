@@ -162,8 +162,6 @@ function HomePage() {
                     </Button>
                 )}
 
-                <Button variant='outlined'>HELLO</Button>
-
                 {displayedTranscript && (
                     <Box
                         sx={{
