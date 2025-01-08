@@ -8,8 +8,6 @@ const { YoutubeTranscript } = require('youtube-transcript');
 
 const he = require('he');
 
-const mongoose = require('mongoose');
-
 const OpenAI = require('openai');
 
 const openai = new OpenAI({
@@ -20,7 +18,7 @@ const openai = new OpenAI({
 // API Endpoints
 
 // adds link to db and transcribes
-router.post('/submit-link', async (req,res) => {
+router.post('/api/submit-link', async (req,res) => {
     const { input, userEmail = null } = req.body;
     const stringInput = input.toString();  
 
@@ -31,9 +29,7 @@ router.post('/submit-link', async (req,res) => {
 
     try {
     const transcript = await YoutubeTranscript.fetchTranscript(stringInput);
-    //console.log("transcript", transcript);
     const transcriptToString = transcript.map(obj => he.decode(he.decode(obj.text))).join(' ');
-    //console.log(transcriptToString);
     const newLink = new Link ({
         user: userEmail,
         videoURL: input,
@@ -48,7 +44,7 @@ router.post('/submit-link', async (req,res) => {
 }
 })
 
-router.get('/getTranscriptionHistory/:userEmail', async (req,res) => {
+router.get('/api/getTranscriptionHistory/:userEmail', async (req,res) => {
     const { userEmail } = req.params;
 
     if (!userEmail) {
@@ -67,7 +63,7 @@ router.get('/getTranscriptionHistory/:userEmail', async (req,res) => {
 
 })
 
-router.delete('/DeleteTranscriptionHistory/:id', async (req,res) => {
+router.delete('/api/DeleteTranscriptionHistory/:id', async (req,res) => {
     const { id } = req.params;
     try {
         await Link.findByIdAndDelete(id);
@@ -78,9 +74,8 @@ router.delete('/DeleteTranscriptionHistory/:id', async (req,res) => {
 })
 ;
 
-router.post('/generate-quiz', async (req, res) => {
+router.post('/api/generate-quiz', async (req, res) => {
     const { transcript } = req.body;
-    //console.log(transcript);
   
     if (!transcript) {
       return res.status(400).json({ message: 'Transcript is required' });
@@ -114,6 +109,11 @@ router.post('/generate-quiz', async (req, res) => {
       res.status(500).json({ message: 'Error generating quiz questions' });
     }
   });
+
+
+  router.get('/api/testing', async (req,res) => {
+    res.send("YAYYYY!");
+  })
 
 
 module.exports = router;

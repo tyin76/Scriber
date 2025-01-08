@@ -49,7 +49,7 @@ function TranscriptionHistory() {
 
   async function handleDelete(id) {
     try {
-      const response = await fetch(`http://localhost:5001/DeleteTranscriptionHistory/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/DeleteTranscriptionHistory/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ function TranscriptionHistory() {
 
 async function handleGenerateQuiz(transcript, id) {
   try {
-    const response = await fetch("http://localhost:5001/generate-quiz", {
+    const response = await fetch("http://localhost:5001/api/generate-quiz", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

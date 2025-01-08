@@ -38,7 +38,7 @@ function HomePage() {
         }
 
         try {
-            const response = await fetch('http://localhost:5001/submit-link', {
+            const response = await fetch('http://localhost:5001/api/submit-link', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ function HomePage() {
 
     async function handleTranscriptionHistory(e) {
       try {
-        const response = await fetch(`http://localhost:5001/getTranscriptionHistory/${encodeURIComponent(user.email)}`, {
+        const response = await fetch(`http://localhost:5001/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
