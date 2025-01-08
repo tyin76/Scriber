@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path'); 
 
 const app = express();
 const appController = require('../backend/controller/controller');
@@ -13,7 +14,7 @@ const corsOptions = {
     const allowedOrigins = [
       'http://localhost:3000', 
       'http://localhost:5001', 
-      'https://scriber-production.up.railway.app/' 
+      'https://scriber-production.up.railway.app/'
     ];
 
     if (!origin || allowedOrigins.includes(origin)) {
@@ -28,9 +29,15 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// API routes
 app.use('/', appController);
 
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -43,11 +50,12 @@ const connectDB = async () => {
   }
 };
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5001; 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
 connectDB();
+
 
 module.exports = app;
