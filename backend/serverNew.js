@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const path = require('path'); 
 
 const app = express();
 const appController = require('../backend/controller/controller');
@@ -28,14 +27,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
 
 app.use('/', appController);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/static'));
-});
+
 
 // Connect to MongoDB
 const connectDB = async () => {
