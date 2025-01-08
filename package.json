@@ -1,5 +1,14 @@
 {
   "dependencies": {
-    "firebase": "^11.1.0"
+    "@react-oauth/google": "^0.12.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase": "^11.1.0",
+    "he": "^1.2.0",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.2",
+    "openai": "^4.77.0",
+    "youtube-transcript": "^1.2.1"
   }
 }
