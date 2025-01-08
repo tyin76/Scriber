@@ -2,18 +2,19 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path'); 
 
 const app = express();
 const appController = require('../backend/controller/controller');
 
 const dbKey = process.env.DB_KEY || process.env.dbKey;
 
-
 const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = [
-      'http://localhost:3000', // Local frontend
-      'http://localhost:5001', // Local backend emulator
+      'http://localhost:3000', 
+      'http://localhost:5001', 
+      'https://scriber-production.up.railway.app/' 
     ];
 
     if (!origin || allowedOrigins.includes(origin)) {
@@ -26,7 +27,15 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+
 app.use('/', appController);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -39,13 +48,11 @@ const connectDB = async () => {
   }
 };
 
-
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
 connectDB();
 
-// Export the app for use in Firebase Functions
 module.exports = app;
