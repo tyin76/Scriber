@@ -14,7 +14,8 @@ const corsOptions = {
     const allowedOrigins = [
       'http://localhost:3000', 
       'http://localhost:5001', 
-      'https://scriber-production.up.railway.app/'
+      'https://scriber-production.up.railway.app/',
+      'https://scriber-126cc.web.app/'
     ];
 
     if (!origin || allowedOrigins.includes(origin)) {
