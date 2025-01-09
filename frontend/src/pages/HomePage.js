@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../auth/firebaseConfig';
 import BluePen from '../images/BluePen.svg'
 import BlackPen from '../images/BlackPen.svg'
+import WhitePen from '../images/WhitePen.svg'
 
 function HomePage() {
     const [input, setInput] = useState('');
@@ -33,7 +34,7 @@ function HomePage() {
     }, []);
 
     useEffect(() => {
-        document.body.style.backgroundColor = '#5a5a5a';
+        document.body.style.backgroundColor = '#141414';
         return () => {
             document.body.style.backgroundColor = '';
         };
@@ -95,10 +96,10 @@ function HomePage() {
 
     return (
         <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
-        <Paper elevation={6} sx={{ p: 4, borderRadius: 3, backgroundColor: '#f5f5f5', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}>
+        <Paper elevation={6} sx={{ p: 4, borderRadius: 3, backgroundColor: '#333333', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <img src={BlackPen} alt="Blue Pen" style={{ maxHeight: '40px', marginRight: '10px' }} />
-                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'black', textTransform: 'uppercase', letterSpacing: 1 }}>
+                <img src={WhitePen} alt="Blue Pen" style={{ maxHeight: '40px', marginRight: '10px' }} />
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'white', textTransform: 'uppercase', letterSpacing: 1 }}>
                     Scriber
                 </Typography>
             </Box>
@@ -152,13 +153,13 @@ function HomePage() {
                 {!user ? (
                     <Stack spacing={2} alignItems="center">
                         <LoginButton setUser={setUser} />
-                        <Typography variant="body1" align="center" color="textSecondary">
-                            Log in for features like transcription history!
+                        <Typography variant="body1" align="center" color="white">
+                            Log in for features like transcription history, quiz generation, and pdf downloads!
                         </Typography>
                     </Stack>
                 ) : (
                     <Box sx={{ mt: 4, textAlign: 'center' }}>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'black', fontFamily: 'Marker' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'white', fontFamily: 'Marker' }}>
                             Welcome, {user.name}!
                         </Typography>
                         <br />
@@ -178,8 +179,8 @@ function HomePage() {
                         borderRadius: 3,
                         textTransform: 'none',
                         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-                        backgroundColor: 'grey',
-                        color: 'white',
+                        backgroundColor: 'white',
+                        color: 'black',
                         borderColor: 'black'
                     }}
                     onClick={handleTranscriptionHistory}
