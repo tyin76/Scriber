@@ -2,4 +2,4 @@ Scriber is a web application designed to make video transcription effortless. Wi
 
 Scriber offers an interactive learning feature: AI-generated quiz questions based on the transcribed video. This allows users to test their understanding for studying or any other purpose they deem fit.
 
-** CURRENTLY UNDER CONSTRUCTION **
+Visit: https://scriber-126cc.web.app

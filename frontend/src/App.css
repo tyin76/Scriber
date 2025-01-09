@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'JerseyFont';
+  src: url('../src/fonts/Jersey15-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Marker';
+  src: url('../src/fonts/PermanentMarker-Regular.ttf');
+}
