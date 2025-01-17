@@ -117,7 +117,7 @@ function HomePage() {
             >
                 <TextField
                     id="video-url"
-                    label="Paste Video URL"
+                    label="Paste Youtube Video URL"
                     variant="outlined"
                     fullWidth
                     value={input}
