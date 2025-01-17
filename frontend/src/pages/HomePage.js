@@ -145,7 +145,7 @@ function HomePage() {
                         backgroundColor: 'black'
                     }}
                 >
-                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Transcribe Video'}
+                    {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Transcribe Video'}
                 </Button>
             </Box>
 

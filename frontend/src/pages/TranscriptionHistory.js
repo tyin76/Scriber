@@ -11,12 +11,23 @@ import { useState } from 'react';
 import { jsPDF } from 'jspdf';
 import HomeIcon from '@mui/icons-material/Home';
 import Tooltip from '@mui/material/Tooltip';
+import { CircularProgress } from '@mui/material';
+import { useEffect } from 'react';
 
 function TranscriptionHistory() {
   const location = useLocation();
   const [history, setHistory] = useState(location.state?.history || []);
   const [quizzes, setQuizzes] = useState("");
   const [answerVisible, setAnswersVisible] = useState({});
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+          document.body.style.backgroundColor = '#141414';
+          return () => {
+              document.body.style.backgroundColor = '';
+          };
+      }, []);
 
   if (!history || history.length === 0) {
     return (
@@ -39,7 +50,7 @@ function TranscriptionHistory() {
       </IconButton>
       </Tooltip>
     </Link>
-          <Typography variant="h5" color="textSecondary">
+          <Typography variant="h5" sx={{ color: 'white' }}>
             No History Found
           </Typography>
         </Box>
@@ -104,6 +115,7 @@ function TranscriptionHistory() {
 };
 
 async function handleGenerateQuiz(transcript, id) {
+  setLoading(true);
   try {
     const response = await fetch("https://scriber-production.up.railway.app/api/generate-quiz", {
       method: 'POST',
@@ -130,6 +142,9 @@ async function handleGenerateQuiz(transcript, id) {
     console.log(quizzes);
   } catch (error) {
     console.log(error);
+  }
+  finally {
+    setLoading(false);
   }
 }
 
@@ -191,8 +206,12 @@ function handleShowAnswer(question) {
           sx={{
             p: 4,
             borderRadius: 5,
-            backgroundColor: '#f7f9fc',
-            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#2a2a2a',
+            boxShadow: '0px 6px 18px rgba(0, 0, 0, 0.3)',
+            transition: 'transform 0.2s',
+            '&:hover': {
+              transform: 'scale(1.03)',
+            },
           }}
         >
           
@@ -207,7 +226,7 @@ function handleShowAnswer(question) {
             
             <Typography
               variant="h6"
-              sx={{ fontWeight: 'bold', color: '#1976d2' }}
+              sx={{ fontWeight: 'bold', color: 'white' }}
             >
               {index + 1}.
             </Typography>
@@ -228,6 +247,10 @@ function handleShowAnswer(question) {
                   textTransform: 'none',
                   borderRadius: 3,
                   fontWeight: 'bold',
+                  backgroundColor: '#EFF1F3',
+                  color: 'black',
+                  border: '2px solid black'
+                  
                 }}
               >
                 Download PDF
@@ -259,9 +282,11 @@ function handleShowAnswer(question) {
                 textTransform: 'none',
                 borderRadius: 3,
                 fontWeight: 'bold',
+                backgroundColor: '#DBD3D8',
+                color: 'black'
               }}
             >
-              Generate Quiz
+              {loading ? <CircularProgress size={24} sx={{ color: 'grey' }}/> : 'Generate Quiz'}
             </Button>
           </Box>
   
@@ -269,7 +294,7 @@ function handleShowAnswer(question) {
           <Box sx={{ mb: 3 }}>
             <Typography
               variant="subtitle1"
-              sx={{ fontWeight: 'bold', mb: 1, color: '#0d47a1' }}
+              sx={{ fontWeight: 'bold', mb: 1, color: 'white' }}
             >
               Video URL:
             </Typography>
@@ -291,7 +316,7 @@ function handleShowAnswer(question) {
           {/* Transcript Section */}
           <Typography
             variant="subtitle1"
-            sx={{ fontWeight: 'bold', mb: 1, color: '#0d47a1' }}
+            sx={{ fontWeight: 'bold', mb: 1, color: 'white' }}
           >
             Transcript:
           </Typography>
