@@ -60,7 +60,7 @@ function TranscriptionHistory() {
 
   async function handleDelete(id) {
     try {
-      const response = await fetch(`https://scriber-production.up.railway.app/api/DeleteTranscriptionHistory/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/DeleteTranscriptionHistory/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ function TranscriptionHistory() {
 async function handleGenerateQuiz(transcript, id) {
   setLoading(true);
   try {
-    const response = await fetch("https://scriber-production.up.railway.app/api/generate-quiz", {
+    const response = await fetch("http://localhost:5001/api/generate-quiz", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -361,9 +361,8 @@ function handleShowAnswer(question) {
                 ))}
                 <br></br>
                 <Button
-                        variant="outlined"
-                        color='secondary'
-                        sx={{ mt: 1 }}
+                        variant="contained"
+                        sx={{ mt: 1, backgroundColor: 'white', color: 'black' }}
                         onClick={() => handleShowAnswer(`${item._id}-${idx}`)}
                       >
                         {answerVisible[`${item._id}-${idx}`] ? 'Hide Answer' : 'Show Answer'}
