@@ -73,6 +73,7 @@ function HomePage() {
             setInput('');
         } catch (error) {
             console.log(error);
+            setErrorMsg(true);
         } finally {
             setLoading(false); 
         }
