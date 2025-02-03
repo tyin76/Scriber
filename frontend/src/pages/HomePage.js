@@ -51,6 +51,7 @@ function HomePage() {
 
         try {
             //'http://localhost:5001/api/submit-link'
+            //'https://scriber-production.up.railway.app/api/submit-link'
             const response = await fetch('https://scriber-production.up.railway.app/api/submit-link', {
                 method: 'POST',
                 headers: {
@@ -86,6 +87,7 @@ function HomePage() {
     async function handleTranscriptionHistory(e) {
         try {
             //`http://localhost:5001/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`
+            //`https://scriber-production.up.railway.app/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`
             const response = await fetch(`https://scriber-production.up.railway.app/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`, {
                 method: 'GET',
                 headers: {

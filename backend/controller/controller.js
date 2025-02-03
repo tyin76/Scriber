@@ -28,7 +28,8 @@ router.post('/api/submit-link', async (req,res) => {
      }
 
     try {
-    const transcript = await YoutubeTranscript.fetchTranscript(stringInput);
+    const proxyUrl = `http://api.scraperapi.com?api_key=eddc849ee52e9316ebcd2947ace339a6&url=${stringInput}`;
+    const transcript = await YoutubeTranscript.fetchTranscript(proxyUrl);
     const transcriptToString = transcript.map(obj => he.decode(he.decode(obj.text))).join(' ');
     const newLink = new Link ({
         user: userEmail,
