@@ -13,6 +13,7 @@ function HomePage() {
     const [displayedTranscript, setDisplayedTranscript] = useState('');
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(false);
     const navigate = useNavigate();
     let userEmail = '';
 
@@ -49,6 +50,7 @@ function HomePage() {
         }
 
         try {
+            //'http://localhost:5001/api/submit-link'
             const response = await fetch('https://scriber-production.up.railway.app/api/submit-link', {
                 method: 'POST',
                 headers: {
@@ -61,6 +63,12 @@ function HomePage() {
             });
             const data = await response.json();
             console.log('from frontend', data.message);
+            if (!response.ok) {
+                setErrorMsg(true);
+            }
+            if (response.ok) {
+                setErrorMsg(false);
+            }
             setDisplayedTranscript(data.transcript);
             setInput('');
         } catch (error) {
@@ -76,6 +84,7 @@ function HomePage() {
 
     async function handleTranscriptionHistory(e) {
         try {
+            //`http://localhost:5001/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`
             const response = await fetch(`https://scriber-production.up.railway.app/api/getTranscriptionHistory/${encodeURIComponent(user.email)}`, {
                 method: 'GET',
                 headers: {
@@ -147,6 +156,10 @@ function HomePage() {
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Transcribe Video'}
                 </Button>
+            </Box>
+
+            <Box>
+                {errorMsg && <Typography variant="body1" align="center" color="error" sx={{ mt: 2 }}> Invalid Youtube Link, please submit a valid Youtube Link </Typography>}
             </Box>
 
             <Box sx={{ mt: 4 }}>

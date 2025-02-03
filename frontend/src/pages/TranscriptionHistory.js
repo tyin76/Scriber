@@ -60,6 +60,7 @@ function TranscriptionHistory() {
 
   async function handleDelete(id) {
     try {
+      //`http://localhost:5001/api/DeleteTranscriptionHistory/${id}`
       const response = await fetch(`https://scriber-production.up.railway.app/api/DeleteTranscriptionHistory/${id}`, {
         method: 'DELETE',
         headers: {
@@ -117,6 +118,7 @@ function TranscriptionHistory() {
 async function handleGenerateQuiz(transcript, id) {
   setLoading(true);
   try {
+    //"http://localhost:5001/api/generate-quiz"
     const response = await fetch("https://scriber-production.up.railway.app/api/generate-quiz", {
       method: 'POST',
       headers: {
