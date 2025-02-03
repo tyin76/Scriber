@@ -40,7 +40,7 @@ router.post('/api/submit-link', async (req,res) => {
     res.status(200).json({ message: 'link and transcript saved successfully', transcript: transcriptToString});
 } catch (error) {
     console.log(error);
-    res.json({ message: 'failed at /submit-link'})
+    res.status(400).json({ message: 'failed at /submit-link'})
 }
 })
 
